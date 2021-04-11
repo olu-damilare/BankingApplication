@@ -148,7 +148,7 @@ public class BankingApplicationTests {
 
     }
     @Test
-    void testThatBranchCanOpenMoreThanOneSavingAccountsForMoreThanOneCustomer(){
+    void testThatBranchCanOpenMoreThanOneSavingsAccountForMoreThanOneCustomer(){
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -169,5 +169,91 @@ public class BankingApplicationTests {
         assertEquals(2, branch.getTotalNumberOfCustomers());
         Account secondAccount = branch.getAccount(secondCustomer, SAVINGS);
         assertNotNull(secondAccount);
+    }
+    @Test
+    void testThatBranchCanOpenMoreThanOneCurrentAccountForMoreThanOneCustomer(){
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertNotNull(branch);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+
+        Address address = new Address("12", "Yaba road");
+        Customer firstCustomer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        Customer secondCustomer = new Customer("Doe", "Re", "Mi", address, "07012345678");
+        branch.openAccount(firstCustomer, CURRENT);
+        assertEquals(1, branch.getTotalNumberOfAccounts());
+        assertEquals(1, branch.getTotalNumberOfCustomers());
+        Account account = branch.getAccount(firstCustomer, CURRENT);
+        assertNotNull(account);
+
+        branch.openAccount(secondCustomer, CURRENT);
+        assertEquals(2, branch.getTotalNumberOfAccounts());
+        assertEquals(2, branch.getTotalNumberOfCustomers());
+        Account secondAccount = branch.getAccount(secondCustomer, CURRENT);
+        assertNotNull(secondAccount);
+    }
+    @Test
+    void testThatACustomerCannotHaveMoreThanOneSavingsAccount(){
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertNotNull(branch);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, SAVINGS);
+        assertEquals(1, branch.getTotalNumberOfAccounts());
+        assertEquals(1, branch.getTotalNumberOfCustomers());
+        Account account = branch.getAccount(customer, SAVINGS);
+        assertNotNull(account);
+
+        branch.openAccount(customer, SAVINGS);
+        assertEquals(1, branch.getTotalNumberOfAccounts());
+        assertEquals(1, branch.getTotalNumberOfCustomers());
+
+    }
+
+    @Test
+    void testThatACustomerCannotHaveMoreThanOneCurrentAccount(){
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertNotNull(branch);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+        assertEquals(1, branch.getTotalNumberOfAccounts());
+        assertEquals(1, branch.getTotalNumberOfCustomers());
+        Account account = branch.getAccount(customer, CURRENT);
+        assertNotNull(account);
+
+        branch.openAccount(customer, CURRENT);
+        assertEquals(1, branch.getTotalNumberOfAccounts());
+        assertEquals(1, branch.getTotalNumberOfCustomers());
+
+    }
+    @Test
+    void testThatACustomerCanHaveBothSavingsAndCurrentAccounts(){
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertNotNull(branch);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+        assertEquals(1, branch.getTotalNumberOfAccounts());
+        assertEquals(1, branch.getTotalNumberOfCustomers());
+        Account account = branch.getAccount(customer, CURRENT);
+        assertNotNull(account);
+
+        branch.openAccount(customer, SAVINGS);
+        assertEquals(2, branch.getTotalNumberOfAccounts());
+        assertEquals(1, branch.getTotalNumberOfCustomers());
     }
 }
