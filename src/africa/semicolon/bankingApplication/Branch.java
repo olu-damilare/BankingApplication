@@ -6,7 +6,7 @@ public class Branch {
     private final String sortCode;
     private final ArrayList<Account> accounts = new ArrayList<>();
     private final ArrayList<Customer> customers = new ArrayList<>();
-    private int accountNumberCounter;
+    private static int accountNumberCounter;
     private static int customerIDCounter;
 
     public Branch(String sortCode) {
@@ -39,7 +39,7 @@ public class Branch {
     }
 
     private String generateAccountNumber() {
-        return String.format("%s%03d", sortCode, ++accountNumberCounter);
+        return String.format("%s%04d", sortCode, ++accountNumberCounter);
     }
 
     public int getTotalNumberOfAccounts() {
@@ -64,5 +64,24 @@ public class Branch {
         boolean customerExistsInBranch = customers.contains(customer);
         if(!customerExistsInBranch)
             throw new IllegalArgumentException("Customer does not exist");
+    }
+
+    public void closeAccount(Customer customer, AccountType accountType) {
+        for (Customer value : customers) {
+            if (value.equals(customer)) {
+                accounts.remove(value.getAccount(accountType));
+                customer.getAccounts().remove(value.getAccount(accountType));
+
+            }
+
+        }
+    }
+
+    public String getAccountName(String accountNumber) {
+        for (int i = 0; i < accounts.size(); i++) {
+            if(accounts.get(i).getAccountNumber().equals(accountNumber))
+                return accounts.get(i).getAccountName();
+        }
+        throw new IllegalArgumentException("Account does not exist");
     }
 }
