@@ -1,3 +1,5 @@
+package africa.semicolon.bankingApplication;
+
 import java.util.ArrayList;
 
 public class Bank {
@@ -25,8 +27,8 @@ public class Bank {
 
     @Override
     public String toString() {
-        return  "Bank Name = '" + bankName + '\n' +
-                "Bank Identification Number = " + bankIdentificationNumber;
+        return  "africa.semicolon.bankingApplication.Bank Name = '" + bankName + '\n' +
+                "africa.semicolon.bankingApplication.Bank Identification Number = " + bankIdentificationNumber;
     }
 
     public void setUpBranch(String sortCode) {
