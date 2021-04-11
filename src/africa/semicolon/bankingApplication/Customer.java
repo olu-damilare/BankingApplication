@@ -84,5 +84,13 @@ public class Customer {
         }
         return numberOfAccounts;
     }
+
+    public ArrayList<Account> getAccounts(){
+        return accounts;
+    }
+
+    public String getFullName() {
+        return firstName + " " + middleName + " " + lastName;
+    }
 }
 
