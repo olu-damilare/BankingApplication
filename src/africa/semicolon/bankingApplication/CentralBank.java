@@ -1,3 +1,4 @@
+package africa.semicolon.bankingApplication;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
