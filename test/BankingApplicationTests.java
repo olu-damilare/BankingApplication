@@ -127,6 +127,8 @@ public class BankingApplicationTests {
         assertEquals(1, branch.getTotalNumberOfCustomers());
         Account account = branch.getAccount(customer, SAVINGS);
         assertNotNull(account);
+        String accountNumber = account.getAccountNumber();
+        assertEquals("John Joe Bloggs", branch.getAccountName(accountNumber));
 
     }
 
@@ -256,4 +258,25 @@ public class BankingApplicationTests {
         assertEquals(2, branch.getTotalNumberOfAccounts());
         assertEquals(1, branch.getTotalNumberOfCustomers());
     }
+
+    @Test
+    void testThatBranchCanCloseCurrentAccount(){
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertNotNull(branch);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+        assertEquals(1, branch.getTotalNumberOfAccounts());
+        assertEquals(1, branch.getTotalNumberOfCustomers());
+        Account account = branch.getAccount(customer, CURRENT);
+        assertNotNull(account);
+
+        branch.closeAccount(customer, CURRENT);
+        assertEquals(0, branch.getTotalNumberOfAccounts());
+    }
+
 }
