@@ -2,6 +2,8 @@ package africa.semicolon.bankingApplication;
 
 import org.w3c.dom.ls.LSOutput;
 
+import java.util.ArrayList;
+
 public class Customer {
 
     private final String lastName;
@@ -9,7 +11,7 @@ public class Customer {
     private String firstName;
     private String middleName;
     private Address address;
-    private Account[] accounts = new Account[2];
+    private ArrayList<Account> accounts = new ArrayList<>();
     private int customerID;
 
     public Customer(String firstName, String middleName, String lastName, Address address, String phoneNumber) {
@@ -23,35 +25,47 @@ public class Customer {
     }
 
     public void addAccount(Account account) {
-        confirmEligibilityToOpenAdditionalAccount();
-        if(accounts[0] == null)
-            accounts[0] = account;
-        else
-            accounts[1] = account;
+        if(confirmEligibilityToOpenAdditionalAccount(account))
+            accounts.add(account);
+        else throw new ArrayIndexOutOfBoundsException(
+                "You have reached the maximum number of accounts owned by a customer"
+        );
     }
 
-    private void confirmEligibilityToOpenAdditionalAccount() {
-        boolean eligibleForAdditionalAccountOwnership = accounts[0] == null || accounts[1] == null;
-        if(!eligibleForAdditionalAccountOwnership)
-            throw new ArrayIndexOutOfBoundsException(
-                    "You have reached the maximum number of accounts owned by a customer"
-            );
+    private boolean confirmEligibilityToOpenAdditionalAccount(Account account) {
+        boolean eligibility = true;
+        if(accounts.size() > 0)
+            for (Account value : accounts) {
+                if (value.getAccountType() == account.getAccountType()) {
+                    eligibility = false;
+                    break;
+                }
+            }
+        return eligibility;
     }
 
     public Account getAccount(AccountType accountType) {
-        verifyThatCustomerOwnsAccountType(accountType);
+        if (verifyThatCustomerOwnsAccountType(accountType)) {
+            for (Account account : accounts)
+                if (account.getAccountType() == accountType)
+                    return account;
 
-        if(accounts[0].getAccountType() == accountType)
-        return accounts[0];
-
-        else
-            return accounts[1];
+        }
+        throw new IllegalArgumentException("Customer does not own a " + accountType + " account");
     }
 
-    private void verifyThatCustomerOwnsAccountType(AccountType accountType) {
-        boolean customerOwnsAccountType = accounts[0].getAccountType() == accountType || accounts[1].getAccountType() == accountType;
-        if(!customerOwnsAccountType)
-            throw new IllegalArgumentException("Customer does not own a " + accountType + " account");
+    public boolean verifyThatCustomerOwnsAccountType(AccountType accountType) {
+        boolean accountTypeExists = false;
+        if(accounts.size() > 0)
+            for (Account account : accounts) {
+                if (account.getAccountType() == accountType) {
+                    accountTypeExists = true;
+                    break;
+                }
+            }
+        return accountTypeExists;
+
+
     }
 
     public int getCustomerID() {
@@ -60,6 +74,15 @@ public class Customer {
 
     public void assignCustomerID(int customerID) {
         this.customerID = customerID;
+    }
+
+    public int getTotalNumberOfAccounts() {
+        int numberOfAccounts = 0;
+        for (Account account : accounts) {
+            if (account != null)
+                numberOfAccounts++;
+        }
+        return numberOfAccounts;
     }
 }
 
