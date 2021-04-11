@@ -3,7 +3,7 @@ package africa.semicolon.bankingApplication;
 import java.util.ArrayList;
 
 public class Branch {
-    private String sortCode;
+    private final String sortCode;
     private final ArrayList<Account> accounts = new ArrayList<>();
     private final ArrayList<Customer> customers = new ArrayList<>();
     private int accountNumberCounter;
@@ -18,10 +18,22 @@ public class Branch {
     }
 
     public void openAccount(Customer customer, AccountType accountType) {
+        if(customer.getTotalNumberOfAccounts() > 0) {
+            if (!customer.verifyThatCustomerOwnsAccountType(accountType)) {
+                accountOpeningProcess(customer, accountType);
+            }
+        }
+        else {
+            accountOpeningProcess(customer, accountType);
+        }
+    }
+
+    private void accountOpeningProcess(Customer customer, AccountType accountType) {
         String accountNumber = generateAccountNumber();
         Account account = new Account(customer, accountType, accountNumber);
         accounts.add(account);
-        customers.add(customer);
+        if(!customers.contains(customer))
+            customers.add(customer);
         customer.addAccount(account);
         customer.assignCustomerID(++customerIDCounter);
     }
