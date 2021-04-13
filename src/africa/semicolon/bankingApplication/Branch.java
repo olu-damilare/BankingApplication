@@ -3,12 +3,19 @@ package africa.semicolon.bankingApplication;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-public class Branch  implements  GetBy{
+public class Branch  implements  Transactions, GetBy{
     private final String sortCode;
     private final ArrayList<Account> accounts = new ArrayList<>();
     private final ArrayList<Customer> customers = new ArrayList<>();
     private static int accountNumberCounter;
     private static int customerIDCounter;
+
+    @Override
+    public String toString() {
+        return "Sort code: " + sortCode + '\n' +
+                "Total number of customers: " + getTotalNumberOfCustomers() + '\n' +
+                "Total number of accounts: " + getTotalNumberOfAccounts();
+    }
 
     public Branch(String sortCode) {
         this.sortCode = sortCode;
@@ -51,6 +58,7 @@ public class Branch  implements  GetBy{
         return customers.size();
     }
 
+    @Override
     public Account getAccount(Customer customer, AccountType accountType) {
         confirmThatCustomerProfileExistsInBranch(customer);
 
@@ -58,7 +66,7 @@ public class Branch  implements  GetBy{
             if(customers.contains(customer))
                 return customer.getAccount(accountType);
         }
-        return null;
+        throw new IllegalArgumentException("Customer does not have a " + accountType + " account");
     }
 
     private void confirmThatCustomerProfileExistsInBranch(Customer customer) {
@@ -107,19 +115,78 @@ public class Branch  implements  GetBy{
 
     @Override
     public Customer getCustomer(String accountNumber) {
-        AccountType type = null;
-        for (Account account : accounts) {
-            if (account.getAccountNumber().equals(accountNumber)) {
-                type = account.getAccountType();
-                break;
-            }
+        AccountType type = getAccountType(accountNumber);
 
-
-        }
         for (Customer customer : customers) {
             if (customer.getAccount(type).getAccountNumber().equals(accountNumber))
                 return customer;
         }
-        throw new IllegalArgumentException("Invalid accountNumber");
+        throw new IllegalArgumentException("Invalid Account Number");
     }
+
+    private AccountType getAccountType(String accountNumber){
+        for (Account account : accounts) {
+            if (account.getAccountNumber().equals(accountNumber)) {
+                return account.getAccountType();
+            }
+        }
+        throw new IllegalArgumentException("Invalid Account Number");
+    }
+
+    @Override
+    public Customer getCustomer(int customerID) {
+        for(Customer customer : customers)
+            if(customer.getCustomerID() == customerID)
+                return customer;
+
+            throw new IllegalArgumentException("Invalid customer ID");
+    }
+
+    @Override
+    public String getAccountNumber(Customer customer, AccountType accountType) {
+        confirmThatCustomerProfileExistsInBranch(customer);
+        for (Customer value : customers) {
+            if (value.equals(customer))
+                return value.getAccount(accountType).getAccountNumber();
+        }
+        throw new IllegalArgumentException("Customer does not have a " + accountType + " account");
+    }
+
+    @Override
+    public Account getAccount(String accountNumber) {
+        for (Account account : accounts) {
+            if (account.getAccountNumber().equals(accountNumber))
+                return account;
+        }
+        throw new IllegalArgumentException("Invalid account number");
+    }
+
+    @Override
+    public ArrayList<Account> getAccounts(int customerID) {
+        for(Customer customer: customers)
+            if(customer.getCustomerID() == customerID)
+                return customer.getAccounts();
+
+            throw new IllegalArgumentException("Invalid customer ID");
+    }
+
+    @Override
+    public void deposit(String accountNumber, BigDecimal amount) {
+        for (Account account : accounts) {
+            if (account.getAccountNumber().equals(accountNumber)) {
+                account.deposit(amount);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public BigDecimal getBalance(String accountNumber) {
+        for (Account account : accounts) {
+            if (account.getAccountNumber().equals(accountNumber))
+                return account.getBalance();
+        }
+        throw new IllegalArgumentException("Invalid account number");
+    }
+
 }
