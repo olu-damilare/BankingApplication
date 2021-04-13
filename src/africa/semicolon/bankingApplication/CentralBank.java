@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class CentralBank {
     private ArrayList<Bank> banks = new ArrayList<>();
+    private static int bankIdentificationNumberCounter = 1000;
 
     public void createBank(String bankName, int bankIdentificationNumber) {
         Bank bank = new Bank(bankName, bankIdentificationNumber);
@@ -13,8 +14,7 @@ public class CentralBank {
     }
 
     public int generateBankIdentificationNumber() {
-        SecureRandom random = new SecureRandom();
-        return 1001 + random.nextInt(8999);
+        return ++bankIdentificationNumberCounter;
     }
 
     public String getBankName(int bank_ID_Number) {
@@ -54,5 +54,8 @@ public class CentralBank {
     public void dissolveBank(Bank bank) {
         if(banks.contains(bank))
            banks.remove(bank);
+    }
+    public void resetBankIdentificationNumber(){
+        bankIdentificationNumberCounter = 1000;
     }
 }
