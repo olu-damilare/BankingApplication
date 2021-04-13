@@ -1,18 +1,16 @@
 package africa.semicolon.bankingApplication;
 
-import org.w3c.dom.ls.LSOutput;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class Customer {
 
-    private final String lastName;
+    private String lastName;
     private String phoneNumber;
     private String firstName;
     private String middleName;
     private Address address;
-    private ArrayList<Account> accounts = new ArrayList<>();
+    private final ArrayList<Account> accounts = new ArrayList<>();
     private int customerID;
 
     public Customer(String firstName, String middleName, String lastName, Address address, String phoneNumber) {
@@ -100,6 +98,28 @@ public class Customer {
                 return account.getBalance();
         }
         throw new IllegalArgumentException("invalid account number");
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPin(String accountNumber, String pin) {
+        Account account = getAccount(accountNumber);
+                account.setPin(pin);
+
+    }
+
+    private Account getAccount(String accountNumber){
+        for (Account account : accounts)
+            if (account.getAccountNumber().equals(accountNumber))
+                return account;
+        throw new IllegalArgumentException("Invalid account number");
+    }
+
+    public String getPin(String accountNumber) {
+        Account account = getAccount(accountNumber);
+             return account.getPin();
     }
 }
 
