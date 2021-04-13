@@ -2,6 +2,8 @@ import africa.semicolon.bankingApplication.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static africa.semicolon.bankingApplication.AccountType.*;
 
@@ -14,13 +16,15 @@ public class BankingApplicationTests {
     void setup() {
         centralBank = new CentralBank();
         bankID = centralBank.generateBankIdentificationNumber();
-        centralBank.createBank("Guarantee Trust africa.semicolon.bankingApplication.Bank", bankID);
+        centralBank.createBank("Guarantee Trust Bank", bankID);
         gtBank = centralBank.getBank(bankID);
 
     }
     @AfterEach
     void tearDown(){
+        centralBank.resetBankIdentificationNumber();
         centralBank = null;
+
     }
 
 
@@ -28,9 +32,6 @@ public class BankingApplicationTests {
     void testThatCentralBankCanCreateBank() {
 
         assertNotNull(gtBank);
-        assertEquals("Guarantee Trust africa.semicolon.bankingApplication.Bank", centralBank.getBankName(bankID));
-        assertEquals(bankID, centralBank.getBankID("Guarantee Trust africa.semicolon.bankingApplication.Bank"));
-        assertEquals(bankID, centralBank.getBankID(gtBank));
         assertEquals(1, centralBank.getTotalNumberOfBanks());
     }
 
@@ -40,7 +41,7 @@ public class BankingApplicationTests {
         assertEquals(1, centralBank.getTotalNumberOfBanks());
 
         int bankID_2 = centralBank.generateBankIdentificationNumber();
-        centralBank.createBank("Zenith africa.semicolon.bankingApplication.Bank", bankID_2);
+        centralBank.createBank("Zenith Bank", bankID_2);
         Bank zenithBank = centralBank.getBank(bankID_2);
 
         assertNotNull(zenithBank);
@@ -54,7 +55,7 @@ public class BankingApplicationTests {
         assertEquals(1, centralBank.getTotalNumberOfBanks());
 
         int bankID_2 = centralBank.generateBankIdentificationNumber();
-        centralBank.createBank("Zenith africa.semicolon.bankingApplication.Bank", bankID_2);
+        centralBank.createBank("Zenith Bank", bankID_2);
         Bank zenithBank = centralBank.getBank(bankID_2);
 
         assertNotNull(zenithBank);
@@ -278,5 +279,108 @@ public class BankingApplicationTests {
         branch.closeAccount(customer, CURRENT);
         assertEquals(0, branch.getTotalNumberOfAccounts());
     }
+    @Test
+    void testThatBankCanFetchTotalNumberOfAccountsInABranch(){
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
 
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+        assertEquals(1, branch.getTotalNumberOfAccounts());
+        Account account = branch.getAccount(customer, CURRENT);
+        assertNotNull(account);
+
+        assertEquals(1, gtBank.getTotalNumberOfAccounts(sortCode));
+    }
+    @Test
+    void testThatBankCanFetchTotalNumberOfCustomersInABranch(){
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+        assertEquals(1, branch.getTotalNumberOfAccounts());
+
+        assertEquals(1, gtBank.getTotalNumberOfCustomers(sortCode));
+    }
+
+    @Test
+    void testThatBankCanFetchTotalNumberOfAccountsBankWide(){
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+        assertEquals(1, branch.getTotalNumberOfAccounts());
+
+        String secondSortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(secondSortCode);
+        assertEquals(2, gtBank.getTotalNumberOfBranches());
+        Branch secondBranch = gtBank.getBranch(secondSortCode);
+        Customer secondCustomer = new Customer("Doe", "Joe", "Bloggs", address, "08012345678");
+        secondBranch.openAccount(secondCustomer, SAVINGS);
+
+
+        assertEquals(2, gtBank.getTotalNumberOfAccounts());
+    }
+    @Test
+    void testThatBankCanFetchTotalNumberOfCustomersBankWide(){
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+        assertEquals(1, branch.getTotalNumberOfCustomers());
+
+        String secondSortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(secondSortCode);
+        assertEquals(2, gtBank.getTotalNumberOfBranches());
+        Branch secondBranch = gtBank.getBranch(secondSortCode);
+        Customer secondCustomer = new Customer("Doe", "Joe", "Bloggs", address, "08012345678");
+        secondBranch.openAccount(secondCustomer, SAVINGS);
+        assertEquals(1, secondBranch.getTotalNumberOfCustomers());
+
+        assertEquals(2, gtBank.getTotalNumberOfCustomers());
+    }
+    @Test
+    void testThatBranchCanGetCustomerByAccountNumber(){
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+        assertEquals(1, branch.getTotalNumberOfCustomers());
+
+        String accountNumber = branch.getAccount(customer, CURRENT).getAccountNumber();
+        assertEquals(customer, branch.getCustomer(accountNumber));
+
+    }
+
+//    @Test
+//    void testThatBranchCanDepositIntoAccount(){
+//        String sortCode = gtBank.generateSortCode();
+//        gtBank.setUpBranch(sortCode);
+//        Branch branch = gtBank.getBranch(sortCode);
+//        assertEquals(1, gtBank.getTotalNumberOfBranches());
+//        Address address = new Address("12", "Yaba road");
+//        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+//        branch.openAccount(customer, CURRENT);
+//
+//        String accountNumber = branch.getAccount(customer, CURRENT).getAccountNumber();
+//        branch.deposit(accountNumber, BigDecimal.valueOf(50_000));
+//        assertEquals(BigDecimal.valueOf(50_000), branch.getBalance(accountNumber));
+//        assertEquals(BigDecimal.valueOf(50_000), customer.getBalance(accountNumber));
+//    }
 }
