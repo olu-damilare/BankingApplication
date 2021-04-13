@@ -27,8 +27,11 @@ public class Bank {
 
     @Override
     public String toString() {
-        return  "africa.semicolon.bankingApplication.Bank Name = '" + bankName + '\n' +
-                "africa.semicolon.bankingApplication.Bank Identification Number = " + bankIdentificationNumber;
+        return  "Bank Name: " + bankName + '\n' +
+                "Bank Identification Number: " + bankIdentificationNumber + '\n' +
+                "Total number of Branches: " + getTotalNumberOfBranches() + '\n' +
+                "Total number of accounts: " + getTotalNumberOfAccounts() + '\n' +
+                "Total number of customers: " + getTotalNumberOfCustomers();
     }
 
     public void setUpBranch(String sortCode) {
@@ -54,5 +57,39 @@ public class Bank {
             if (branches.contains(branch))
                 branches.remove(branch);
         }
+    }
+
+    public int getTotalNumberOfAccounts(String branchSortCode) {
+        for (Branch branch : branches) {
+            String existingSortCode = branch.getSortCode();
+            if (existingSortCode.equals(branchSortCode))
+                return branch.getTotalNumberOfAccounts();
+        }
+        throw new IllegalArgumentException("invalid sort code");
+    }
+
+    public int getTotalNumberOfCustomers(String branchSortCode) {
+        for (Branch branch : branches) {
+            String existingSortCode = branch.getSortCode();
+            if (existingSortCode.equals(branchSortCode))
+                return branch.getTotalNumberOfCustomers();
+        }
+        throw new IllegalArgumentException("invalid sort code");
+    }
+
+    public int getTotalNumberOfAccounts() {
+        int totalNumberOfAccounts = 0;
+        for (Branch branch : branches) {
+            totalNumberOfAccounts += branch.getTotalNumberOfAccounts();
+        }
+        return totalNumberOfAccounts;
+    }
+
+    public int getTotalNumberOfCustomers() {
+        int totalNumberOfCustomers = 0;
+        for (Branch branch : branches) {
+            totalNumberOfCustomers += branch.getTotalNumberOfCustomers();
+        }
+        return totalNumberOfCustomers;
     }
 }
