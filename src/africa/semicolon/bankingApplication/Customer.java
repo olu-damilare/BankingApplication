@@ -2,6 +2,7 @@ package africa.semicolon.bankingApplication;
 
 import org.w3c.dom.ls.LSOutput;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class Customer {
@@ -91,6 +92,14 @@ public class Customer {
 
     public String getFullName() {
         return firstName + " " + middleName + " " + lastName;
+    }
+
+    public BigDecimal getBalance(String accountNumber) {
+        for (Account account : accounts) {
+            if (account.getAccountNumber().equals(accountNumber))
+                return account.getBalance();
+        }
+        throw new IllegalArgumentException("invalid account number");
     }
 }
 
