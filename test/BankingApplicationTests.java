@@ -12,6 +12,8 @@ public class BankingApplicationTests {
     int bankID;
     CentralBank centralBank;
     Bank gtBank;
+    String sortCode;
+    Branch branch;
 
     @BeforeEach
     void setup() {
@@ -19,6 +21,9 @@ public class BankingApplicationTests {
         bankID = centralBank.generateBankIdentificationNumber();
         centralBank.createBank("Guarantee Trust Bank", bankID);
         gtBank = centralBank.getBank(bankID);
+        sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        branch = gtBank.getBranch(sortCode);
 
     }
 
@@ -26,13 +31,13 @@ public class BankingApplicationTests {
     void tearDown() {
         centralBank.resetBankIdentificationNumber();
         centralBank = null;
+        branch.resetCustomerIDCounter();
 
     }
 
 
     @Test
     void testThatCentralBankCanCreateBank() {
-
         assertNotNull(gtBank);
         assertEquals(1, centralBank.getTotalNumberOfBanks());
     }
@@ -74,8 +79,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBankCanSetUpBranch() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertNotNull(branch);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
@@ -83,8 +86,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBankCanSetUpMoreThanOneBranch() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertNotNull(branch);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
@@ -99,8 +100,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBankCanDissolveBranch() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertNotNull(branch);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
@@ -119,8 +118,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCanOpenSavingsAccountForCustomer() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertNotNull(branch);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
@@ -139,8 +136,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCanOpenCurrentAccountForCustomer() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertNotNull(branch);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
@@ -157,8 +152,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCanOpenMoreThanOneSavingsAccountForMoreThanOneCustomer() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertNotNull(branch);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
@@ -181,8 +174,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCanOpenMoreThanOneCurrentAccountForMoreThanOneCustomer() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertNotNull(branch);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
@@ -205,8 +196,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatACustomerCannotHaveMoreThanOneSavingsAccount() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertNotNull(branch);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
@@ -227,8 +216,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatACustomerCannotHaveMoreThanOneCurrentAccount() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertNotNull(branch);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
@@ -249,8 +236,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatACustomerCanHaveBothSavingsAndCurrentAccounts() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertNotNull(branch);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
@@ -270,8 +255,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCanCloseCurrentAccount() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertNotNull(branch);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
@@ -290,8 +273,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBankCanFetchTotalNumberOfAccountsInABranch() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
 
@@ -307,8 +288,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBankCanFetchTotalNumberOfCustomersInABranch() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
 
@@ -322,8 +301,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBankCanFetchTotalNumberOfAccountsBankWide() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -344,8 +321,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBankCanFetchTotalNumberOfCustomersBankWide() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -366,8 +341,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCanGetCustomerByAccountNumber() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -382,8 +355,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCanGetCustomerByCustomerID() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -397,8 +368,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCanGetAccountByAccountNumber() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -413,8 +382,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCanGetCustomerAccountsByCustomerID() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -431,8 +398,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCanDepositIntoAccount() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -447,8 +412,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCannotDepositNegativeAmount() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -471,8 +434,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatCustomerCanSetPinOnAccount() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -487,8 +448,6 @@ public class BankingApplicationTests {
     }
     @Test
     void testThatCustomerCanUpdatePinOnAccount() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -507,8 +466,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatCustomerCanOnlySet_4_DigitPinOnAccount() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -527,8 +484,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCanWithdrawFromAccount() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -549,8 +504,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCannotWithdrawNegativeAmountFromAccount() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -568,16 +521,13 @@ public class BankingApplicationTests {
             branch.withdraw(accountNumber, BigDecimal.valueOf(-20_000), customer.getPin(accountNumber));
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
-            ;
-        }
+                    }
         assertEquals(BigDecimal.valueOf(50_000), branch.getBalance(accountNumber));
         assertEquals(BigDecimal.valueOf(50_000), customer.getBalance(accountNumber));
     }
 
     @Test
     void testThatBranchCannotWithdrawFromAnInsufficientBalance() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -602,8 +552,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCannotWithdrawWithInvalidPin() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -628,8 +576,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCanTransferFundsBetweenTwoAccounts() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -654,8 +600,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCannotTransferFundsBetweenTwoAccountsWithInvalidAmount() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -683,8 +627,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCannotTransferFundsBetweenTwoAccountsWithInsufficientBalance() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -712,8 +654,6 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCannotTransferFundsBetweenTwoAccountsWithInvalidPin() {
-        String sortCode = gtBank.generateSortCode();
-        gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
         Address address = new Address("12", "Yaba road");
@@ -738,6 +678,72 @@ public class BankingApplicationTests {
         assertEquals(BigDecimal.valueOf(50_000), branch.getBalance(accountNumber));
         assertEquals(BigDecimal.valueOf(0), branch.getBalance(beneficiaryAccountNumber));
     }
+
+    @Test
+    void testThatBranchCanUpdateCustomerFirstName(){
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+
+        assertEquals("John", branch.getFirstName(customer));
+        assertEquals("John Joe Bloggs", branch.getAccount(customer, CURRENT).getAccountName());
+
+        String newFirstName = "Mia";
+        branch.updateFirstName(customer, newFirstName);
+
+        assertEquals(newFirstName, branch.getFirstName(customer));
+        assertEquals(newFirstName + " Joe Bloggs", branch.getAccount(customer, CURRENT).getAccountName());
+    }
+
+    @Test
+    void testThatBranchCanUpdateCustomerMiddleName(){
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+
+        assertEquals("Joe", branch.getMiddleName(customer));
+        assertEquals("John Joe Bloggs", branch.getAccount(customer, CURRENT).getAccountName());
+
+        String newMiddleName = "Mia";
+        branch.updateMiddleName(customer, newMiddleName);
+
+        assertEquals(newMiddleName, branch.getMiddleName(customer));
+        assertEquals("John " + newMiddleName + " Bloggs", branch.getAccount(customer, CURRENT).getAccountName());
+    }
+
+    @Test
+    void testThatBranchCanUpdateCustomerLastName(){
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+
+        assertEquals("Bloggs", branch.getLastName(customer));
+        assertEquals("John Joe Bloggs", branch.getAccount(customer, CURRENT).getAccountName());
+
+        String newMiddleName = "Mia";
+        branch.updateMiddleName(customer, newMiddleName);
+
+        assertEquals(newMiddleName, branch.getMiddleName(customer));
+        assertEquals("John " + newMiddleName + " Bloggs", branch.getAccount(customer, CURRENT).getAccountName());
+    }
+
+    @Test
+    void testThatBranchCanUpdateCustomerPhoneNumber(){
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+        assertEquals("08012345678", branch.getPhoneNumber(customer));
+
+        String newPhoneNumber = "08098765432";
+        branch.updatePhoneNumber(customer, newPhoneNumber);
+
+        assertEquals(newPhoneNumber, branch.getPhoneNumber(customer));
+        }
+
 
 
 }
