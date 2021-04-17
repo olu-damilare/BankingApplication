@@ -21,7 +21,6 @@ public class Account {
         return accountType;
     }
 
-    public int getCustomerID(){return customerID;}
     public String getAccountNumber() {
         return accountNumber;
     }
@@ -35,15 +34,43 @@ public class Account {
     }
 
     public void deposit(BigDecimal amount) {
-        if(amount.compareTo(new BigDecimal(0)) == 1)
-      balance = balance.add(amount);
+        amountValidation(amount);
+        balance = balance.add(amount);
     }
 
     public void setPin(String pin) {
+        validatePin(pin);
         this.pin = pin;
+    }
+
+    private void validatePin(String pin) {
+        if(pin.length() !=  4)
+            throw new IllegalArgumentException("Invalid pin");
     }
 
     public String getPin() {
         return pin;
+    }
+
+    public void withdraw(BigDecimal amount, String pin) {
+        amountValidation(amount);
+        sufficientBalanceValidation(amount);
+        if(!pin.equals(this.pin))
+            throw new IllegalArgumentException("Invalid pin");
+        balance = balance.subtract(amount);
+    }
+
+    private void sufficientBalanceValidation(BigDecimal amount) {
+        if(amount.compareTo(balance) == 1)
+            throw new IllegalArgumentException("Insufficient funds");
+    }
+
+    private void amountValidation(BigDecimal amount) {
+        if (amount.compareTo(new BigDecimal(0)) == -1)
+            throw new IllegalArgumentException("Invalid amount");
+    }
+    private void pinValidation(String pin){
+        if((pin.equals(this.pin)))
+            throw new IllegalArgumentException("Invalid pin");
     }
 }
