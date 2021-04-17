@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class Account {
     private final int customerID;
     private final String accountNumber;
-    private final String accountName;
+    private String accountName;
     private final AccountType accountType;
     private BigDecimal balance = new BigDecimal(0);
     private String pin;
@@ -55,8 +55,7 @@ public class Account {
     public void withdraw(BigDecimal amount, String pin) {
         amountValidation(amount);
         sufficientBalanceValidation(amount);
-        if(!pin.equals(this.pin))
-            throw new IllegalArgumentException("Invalid pin");
+        pinValidation(pin);
         balance = balance.subtract(amount);
     }
 
@@ -70,7 +69,15 @@ public class Account {
             throw new IllegalArgumentException("Invalid amount");
     }
     private void pinValidation(String pin){
-        if((pin.equals(this.pin)))
+        if(!(pin.equals(this.pin)))
             throw new IllegalArgumentException("Invalid pin");
+    }
+
+    public void updateAccountName(String newAccountName){
+        accountName = newAccountName;
+    }
+
+    public int getCustomerID() {
+        return customerID;
     }
 }
