@@ -187,4 +187,50 @@ public class Branch  implements  Transactions, GetBy {
         getAccount(senderAccountNumber).withdraw(amount, senderAccountPin);
         getAccount(beneficiaryAccountNumber).deposit(amount);
     }
+
+
+    @Override
+    public void updateFirstName(Customer customer, String newFirstName) {
+        getCustomer(customer.getCustomerID()).setFirstName(newFirstName);
+        Account[] accounts = getAccounts(customer.getCustomerID()).toArray(new Account[0]);
+        updateAccountName(customer, accounts);
+    }
+
+    @Override
+    public void updateMiddleName(Customer customer, String newMiddleName) {
+        getCustomer(customer.getCustomerID()).setMiddleName(newMiddleName);
+        Account[] accounts = getAccounts(customer.getCustomerID()).toArray(new Account[0]);
+        updateAccountName(customer, accounts);
+    }
+
+    @Override
+    public void updatePhoneNumber(Customer customer, String newPhoneNumber) {
+        getCustomer(customer.getCustomerID()).setPhoneNumber(newPhoneNumber);
+    }
+
+    private void updateAccountName(Customer customer, Account[] accounts) {
+        for (Account account : accounts) {
+            account.updateAccountName(customer.getFullName());
+        }
+    }
+
+    public String getFirstName(Customer customer) {
+      return getCustomer(customer.getCustomerID()).getFirstName();
+    }
+
+    public void resetCustomerIDCounter() {
+        customerIDCounter = 0;
+    }
+
+    public String getMiddleName(Customer customer) {
+        return getCustomer(customer.getCustomerID()).getMiddleName();
+    }
+
+    public String getLastName(Customer customer) {
+        return getCustomer(customer.getCustomerID()).getLastName();
+    }
+
+    public String getPhoneNumber(Customer customer) {
+        return getCustomer(customer.getCustomerID()).getPhoneNumber();
+    }
 }
