@@ -3,12 +3,14 @@ package africa.semicolon.bankingApplication;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-public class Branch  implements  Transactions, GetBy{
+
+public class Branch  implements  Transactions, GetBy {
     private final String sortCode;
     private final ArrayList<Account> accounts = new ArrayList<>();
     private final ArrayList<Customer> customers = new ArrayList<>();
     private static int accountNumberCounter;
     private static int customerIDCounter;
+
 
     @Override
     public String toString() {
@@ -26,12 +28,11 @@ public class Branch  implements  Transactions, GetBy{
     }
 
     public void openAccount(Customer customer, AccountType accountType) {
-        if(customer.getTotalNumberOfAccounts() > 0) {
+        if (customer.getTotalNumberOfAccounts() > 0) {
             if (!customer.verifyThatCustomerOwnsAccountType(accountType)) {
                 accountOpeningProcess(customer, accountType);
             }
-        }
-        else {
+        } else {
             accountOpeningProcess(customer, accountType);
         }
     }
@@ -40,7 +41,7 @@ public class Branch  implements  Transactions, GetBy{
         String accountNumber = generateAccountNumber();
         Account account = new Account(customer, accountType, accountNumber);
         accounts.add(account);
-        if(!customers.contains(customer))
+        if (!customers.contains(customer))
             customers.add(customer);
         customer.addAccount(account);
         customer.assignCustomerID(++customerIDCounter);
@@ -63,7 +64,7 @@ public class Branch  implements  Transactions, GetBy{
         confirmThatCustomerProfileExistsInBranch(customer);
 
         for (int i = 0; i < customers.size(); i++) {
-            if(customers.contains(customer))
+            if (customers.contains(customer))
                 return customer.getAccount(accountType);
         }
         throw new IllegalArgumentException("Customer does not have a " + accountType + " account");
@@ -71,7 +72,7 @@ public class Branch  implements  Transactions, GetBy{
 
     private void confirmThatCustomerProfileExistsInBranch(Customer customer) {
         boolean customerExistsInBranch = customers.contains(customer);
-        if(!customerExistsInBranch)
+        if (!customerExistsInBranch)
             throw new IllegalArgumentException("Customer does not exist");
     }
 
@@ -95,24 +96,6 @@ public class Branch  implements  Transactions, GetBy{
         throw new IllegalArgumentException("Account does not exist");
     }
 
-
-//    @Override
-//    public void deposit(String accountNumber, BigDecimal amount) {
-//        for (int i = 0; i < accounts.size(); i++) {
-//
-//        }
-//    }
-
-//    @Override
-//    public BigDecimal getBalance(String accountNumber) {
-//        for (Account account : accounts) {
-//            if (account.getAccountNumber().equals(accountNumber))
-//                return account.getBalance();
-//        }
-//        throw new IllegalArgumentException("Invalid account number");
-//    }
-
-
     @Override
     public Customer getCustomer(String accountNumber) {
         AccountType type = getAccountType(accountNumber);
@@ -124,7 +107,7 @@ public class Branch  implements  Transactions, GetBy{
         throw new IllegalArgumentException("Invalid Account Number");
     }
 
-    private AccountType getAccountType(String accountNumber){
+    private AccountType getAccountType(String accountNumber) {
         for (Account account : accounts) {
             if (account.getAccountNumber().equals(accountNumber)) {
                 return account.getAccountType();
@@ -135,11 +118,11 @@ public class Branch  implements  Transactions, GetBy{
 
     @Override
     public Customer getCustomer(int customerID) {
-        for(Customer customer : customers)
-            if(customer.getCustomerID() == customerID)
+        for (Customer customer : customers)
+            if (customer.getCustomerID() == customerID)
                 return customer;
 
-            throw new IllegalArgumentException("Invalid customer ID");
+        throw new IllegalArgumentException("Invalid customer ID");
     }
 
     @Override
@@ -163,11 +146,11 @@ public class Branch  implements  Transactions, GetBy{
 
     @Override
     public ArrayList<Account> getAccounts(int customerID) {
-        for(Customer customer: customers)
-            if(customer.getCustomerID() == customerID)
+        for (Customer customer : customers)
+            if (customer.getCustomerID() == customerID)
                 return customer.getAccounts();
 
-            throw new IllegalArgumentException("Invalid customer ID");
+        throw new IllegalArgumentException("Invalid customer ID");
     }
 
     @Override
@@ -189,4 +172,19 @@ public class Branch  implements  Transactions, GetBy{
         throw new IllegalArgumentException("Invalid account number");
     }
 
+    @Override
+    public void withdraw(String accountNumber, BigDecimal amount, String pin) {
+        for (Account account : accounts) {
+            if (account.getAccountNumber().equals(accountNumber))
+                if (account.getPin().equals(pin))
+                    account.withdraw(amount, pin);
+            break;
+        }
+    }
+
+    @Override
+    public void transfer(String senderAccountNumber, String beneficiaryAccountNumber, BigDecimal amount, String senderAccountPin) {
+        getAccount(senderAccountNumber).withdraw(amount, senderAccountPin);
+        getAccount(beneficiaryAccountNumber).deposit(amount);
+    }
 }
