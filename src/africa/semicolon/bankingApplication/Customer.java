@@ -100,9 +100,6 @@ public class Customer {
         throw new IllegalArgumentException("invalid account number");
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
 
     public void setPin(String accountNumber, String pin) {
         Account account = getAccount(accountNumber);
@@ -121,5 +118,12 @@ public class Customer {
         Account account = getAccount(accountNumber);
              return account.getPin();
     }
+
+    public void updatePin(String accountNumber, String oldPin, String newPin) {
+        Account account = getAccount(accountNumber);
+        if(account.getPin().equals(oldPin))
+            account.setPin(newPin);
+    }
+
 }
 
