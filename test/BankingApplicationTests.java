@@ -21,8 +21,9 @@ public class BankingApplicationTests {
         gtBank = centralBank.getBank(bankID);
 
     }
+
     @AfterEach
-    void tearDown(){
+    void tearDown() {
         centralBank.resetBankIdentificationNumber();
         centralBank = null;
 
@@ -50,8 +51,9 @@ public class BankingApplicationTests {
         assertEquals(2, centralBank.getTotalNumberOfBanks());
 
     }
+
     @Test
-    void testThatCentralBankCanDissolveBank(){
+    void testThatCentralBankCanDissolveBank() {
         assertNotNull(gtBank);
         assertEquals(1, centralBank.getTotalNumberOfBanks());
 
@@ -71,16 +73,16 @@ public class BankingApplicationTests {
     }
 
     @Test
-    void testThatBankCanSetUpBranch(){
-    String sortCode = gtBank.generateSortCode();
-    gtBank.setUpBranch(sortCode);
-    Branch branch = gtBank.getBranch(sortCode);
-    assertNotNull(branch);
-    assertEquals(1, gtBank.getTotalNumberOfBranches());
+    void testThatBankCanSetUpBranch() {
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertNotNull(branch);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
     }
 
     @Test
-    void testThatBankCanSetUpMoreThanOneBranch(){
+    void testThatBankCanSetUpMoreThanOneBranch() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -94,8 +96,9 @@ public class BankingApplicationTests {
         assertEquals(2, gtBank.getTotalNumberOfBranches());
 
     }
+
     @Test
-    void testThatBankCanDissolveBranch(){
+    void testThatBankCanDissolveBranch() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -115,7 +118,7 @@ public class BankingApplicationTests {
     }
 
     @Test
-    void testThatBranchCanOpenSavingsAccountForCustomer(){
+    void testThatBranchCanOpenSavingsAccountForCustomer() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -135,7 +138,7 @@ public class BankingApplicationTests {
     }
 
     @Test
-    void testThatBranchCanOpenCurrentAccountForCustomer(){
+    void testThatBranchCanOpenCurrentAccountForCustomer() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -151,8 +154,9 @@ public class BankingApplicationTests {
         assertNotNull(account);
 
     }
+
     @Test
-    void testThatBranchCanOpenMoreThanOneSavingsAccountForMoreThanOneCustomer(){
+    void testThatBranchCanOpenMoreThanOneSavingsAccountForMoreThanOneCustomer() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -174,8 +178,9 @@ public class BankingApplicationTests {
         Account secondAccount = branch.getAccount(secondCustomer, SAVINGS);
         assertNotNull(secondAccount);
     }
+
     @Test
-    void testThatBranchCanOpenMoreThanOneCurrentAccountForMoreThanOneCustomer(){
+    void testThatBranchCanOpenMoreThanOneCurrentAccountForMoreThanOneCustomer() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -197,8 +202,9 @@ public class BankingApplicationTests {
         Account secondAccount = branch.getAccount(secondCustomer, CURRENT);
         assertNotNull(secondAccount);
     }
+
     @Test
-    void testThatACustomerCannotHaveMoreThanOneSavingsAccount(){
+    void testThatACustomerCannotHaveMoreThanOneSavingsAccount() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -220,7 +226,7 @@ public class BankingApplicationTests {
     }
 
     @Test
-    void testThatACustomerCannotHaveMoreThanOneCurrentAccount(){
+    void testThatACustomerCannotHaveMoreThanOneCurrentAccount() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -240,8 +246,9 @@ public class BankingApplicationTests {
         assertEquals(1, branch.getTotalNumberOfCustomers());
 
     }
+
     @Test
-    void testThatACustomerCanHaveBothSavingsAndCurrentAccounts(){
+    void testThatACustomerCanHaveBothSavingsAndCurrentAccounts() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -262,7 +269,7 @@ public class BankingApplicationTests {
     }
 
     @Test
-    void testThatBranchCanCloseCurrentAccount(){
+    void testThatBranchCanCloseCurrentAccount() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -280,8 +287,9 @@ public class BankingApplicationTests {
         branch.closeAccount(customer, CURRENT);
         assertEquals(0, branch.getTotalNumberOfAccounts());
     }
+
     @Test
-    void testThatBankCanFetchTotalNumberOfAccountsInABranch(){
+    void testThatBankCanFetchTotalNumberOfAccountsInABranch() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -296,8 +304,9 @@ public class BankingApplicationTests {
 
         assertEquals(1, gtBank.getTotalNumberOfAccounts(sortCode));
     }
+
     @Test
-    void testThatBankCanFetchTotalNumberOfCustomersInABranch(){
+    void testThatBankCanFetchTotalNumberOfCustomersInABranch() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -312,7 +321,7 @@ public class BankingApplicationTests {
     }
 
     @Test
-    void testThatBankCanFetchTotalNumberOfAccountsBankWide(){
+    void testThatBankCanFetchTotalNumberOfAccountsBankWide() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -332,8 +341,9 @@ public class BankingApplicationTests {
 
         assertEquals(2, gtBank.getTotalNumberOfAccounts());
     }
+
     @Test
-    void testThatBankCanFetchTotalNumberOfCustomersBankWide(){
+    void testThatBankCanFetchTotalNumberOfCustomersBankWide() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -353,8 +363,9 @@ public class BankingApplicationTests {
 
         assertEquals(2, gtBank.getTotalNumberOfCustomers());
     }
+
     @Test
-    void testThatBranchCanGetCustomerByAccountNumber(){
+    void testThatBranchCanGetCustomerByAccountNumber() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -370,7 +381,7 @@ public class BankingApplicationTests {
     }
 
     @Test
-    void testThatBranchCanGetCustomerByCustomerID(){
+    void testThatBranchCanGetCustomerByCustomerID() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -385,7 +396,7 @@ public class BankingApplicationTests {
     }
 
     @Test
-    void testThatBranchCanGetAccountByAccountNumber(){
+    void testThatBranchCanGetAccountByAccountNumber() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -399,8 +410,9 @@ public class BankingApplicationTests {
         String accountNumber = branch.getAccountNumber(customer, CURRENT);
         assertEquals(account, branch.getAccount(accountNumber));
     }
+
     @Test
-    void testThatBranchCanGetCustomerAccountsByCustomerID(){
+    void testThatBranchCanGetCustomerAccountsByCustomerID() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -418,7 +430,7 @@ public class BankingApplicationTests {
 
 
     @Test
-    void testThatBranchCanDepositIntoAccount(){
+    void testThatBranchCanDepositIntoAccount() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -432,8 +444,9 @@ public class BankingApplicationTests {
         assertEquals(BigDecimal.valueOf(50_000), branch.getBalance(accountNumber));
         assertEquals(BigDecimal.valueOf(50_000), customer.getBalance(accountNumber));
     }
+
     @Test
-    void testThatBranchCannotDepositNegative(){
+    void testThatBranchCannotDepositNegativeAmount() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -447,12 +460,17 @@ public class BankingApplicationTests {
         assertEquals(BigDecimal.valueOf(50_000), branch.getBalance(accountNumber));
         assertEquals(BigDecimal.valueOf(50_000), customer.getBalance(accountNumber));
 
-        branch.deposit(accountNumber, BigDecimal.valueOf(-50_000));
+        try {
+            branch.deposit(accountNumber, BigDecimal.valueOf(-50_000));
+        } catch (IllegalArgumentException e) {
+            e.getMessage();
+        }
         assertEquals(BigDecimal.valueOf(50_000), branch.getBalance(accountNumber));
         assertEquals(BigDecimal.valueOf(50_000), customer.getBalance(accountNumber));
     }
+
     @Test
-    void testThatCustomerCanSetPinOnAccount(){
+    void testThatCustomerCanSetPinOnAccount() {
         String sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         Branch branch = gtBank.getBranch(sortCode);
@@ -465,7 +483,263 @@ public class BankingApplicationTests {
         String pin = "1234";
         customer.setPin(accountNumber, pin);
 
-        assertEquals("1234", customer.getPin(accountNumber));
+        assertEquals(pin, customer.getPin(accountNumber));
+    }
+    @Test
+    void testThatCustomerCanUpdatePinOnAccount() {
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+
+        String accountNumber = branch.getAccount(customer, CURRENT).getAccountNumber();
+        String pin = "1234";
+        customer.setPin(accountNumber, pin);
+        assertEquals(pin, customer.getPin(accountNumber));
+
+        String newPin = "1111";
+        customer.updatePin(accountNumber, pin, newPin);
+        assertEquals(newPin, customer.getPin(accountNumber));
     }
 
+    @Test
+    void testThatCustomerCanOnlySet_4_DigitPinOnAccount() {
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+
+        String accountNumber = branch.getAccount(customer, CURRENT).getAccountNumber();
+        String pin = "12345";
+        try {
+            customer.setPin(accountNumber, pin);
+        } catch (IllegalArgumentException e) {
+            e.getMessage();
+        }
+        assertNull(customer.getPin(accountNumber));
+    }
+
+    @Test
+    void testThatBranchCanWithdrawFromAccount() {
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+
+        String accountNumber = branch.getAccount(customer, CURRENT).getAccountNumber();
+        branch.deposit(accountNumber, BigDecimal.valueOf(50_000));
+        assertEquals(BigDecimal.valueOf(50_000), branch.getBalance(accountNumber));
+
+        String pin = "1234";
+        customer.setPin(accountNumber, pin);
+
+        branch.withdraw(accountNumber, BigDecimal.valueOf(20_000), customer.getPin(accountNumber));
+        assertEquals(BigDecimal.valueOf(30_000), branch.getBalance(accountNumber));
+        assertEquals(BigDecimal.valueOf(30_000), customer.getBalance(accountNumber));
+    }
+
+    @Test
+    void testThatBranchCannotWithdrawNegativeAmountFromAccount() {
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+
+        String accountNumber = branch.getAccount(customer, CURRENT).getAccountNumber();
+        branch.deposit(accountNumber, BigDecimal.valueOf(50_000));
+        assertEquals(BigDecimal.valueOf(50_000), branch.getBalance(accountNumber));
+
+        String pin = "1234";
+        customer.setPin(accountNumber, pin);
+
+        try {
+            branch.withdraw(accountNumber, BigDecimal.valueOf(-20_000), customer.getPin(accountNumber));
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            ;
+        }
+        assertEquals(BigDecimal.valueOf(50_000), branch.getBalance(accountNumber));
+        assertEquals(BigDecimal.valueOf(50_000), customer.getBalance(accountNumber));
+    }
+
+    @Test
+    void testThatBranchCannotWithdrawFromAnInsufficientBalance() {
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+
+        String accountNumber = branch.getAccount(customer, CURRENT).getAccountNumber();
+        branch.deposit(accountNumber, BigDecimal.valueOf(50_000));
+        assertEquals(BigDecimal.valueOf(50_000), branch.getBalance(accountNumber));
+
+        String pin = "1234";
+        customer.setPin(accountNumber, pin);
+
+        try {
+            branch.withdraw(accountNumber, BigDecimal.valueOf(100_000), customer.getPin(accountNumber));
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        assertEquals(BigDecimal.valueOf(50_000), branch.getBalance(accountNumber));
+        assertEquals(BigDecimal.valueOf(50_000), customer.getBalance(accountNumber));
+    }
+
+    @Test
+    void testThatBranchCannotWithdrawWithInvalidPin() {
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+
+        String accountNumber = branch.getAccount(customer, CURRENT).getAccountNumber();
+        branch.deposit(accountNumber, BigDecimal.valueOf(50_000));
+        assertEquals(BigDecimal.valueOf(50_000), branch.getBalance(accountNumber));
+
+        String pin = "1234";
+        customer.setPin(accountNumber, pin);
+
+        try {
+            branch.withdraw(accountNumber, BigDecimal.valueOf(10_000), "1111");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        assertEquals(BigDecimal.valueOf(50_000), branch.getBalance(accountNumber));
+        assertEquals(BigDecimal.valueOf(50_000), customer.getBalance(accountNumber));
+    }
+
+    @Test
+    void testThatBranchCanTransferFundsBetweenTwoAccounts() {
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+        Customer secondCustomer = new Customer("Doe", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(secondCustomer, SAVINGS);
+        assertEquals(2, branch.getTotalNumberOfAccounts());
+
+        String accountNumber = branch.getAccount(customer, CURRENT).getAccountNumber();
+        branch.deposit(accountNumber, BigDecimal.valueOf(50_000));
+        String pin = "1234";
+        customer.setPin(accountNumber, pin);
+
+        String beneficiaryAccountNumber = branch.getAccount(secondCustomer, SAVINGS).getAccountNumber();
+        assertEquals(BigDecimal.valueOf(0), branch.getBalance(beneficiaryAccountNumber));
+        branch.transfer(accountNumber, beneficiaryAccountNumber, BigDecimal.valueOf(20_000), customer.getPin(accountNumber));
+        assertEquals(BigDecimal.valueOf(30_000), branch.getBalance(accountNumber));
+        assertEquals(BigDecimal.valueOf(20_000), branch.getBalance(beneficiaryAccountNumber));
+
+    }
+
+    @Test
+    void testThatBranchCannotTransferFundsBetweenTwoAccountsWithInvalidAmount() {
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+        Customer secondCustomer = new Customer("Doe", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(secondCustomer, SAVINGS);
+        assertEquals(2, branch.getTotalNumberOfAccounts());
+
+        String accountNumber = branch.getAccount(customer, CURRENT).getAccountNumber();
+        branch.deposit(accountNumber, BigDecimal.valueOf(50_000));
+        String pin = "1234";
+        customer.setPin(accountNumber, pin);
+
+        String beneficiaryAccountNumber = branch.getAccount(secondCustomer, SAVINGS).getAccountNumber();
+        assertEquals(BigDecimal.valueOf(0), branch.getBalance(beneficiaryAccountNumber));
+        try {
+            branch.transfer(accountNumber, beneficiaryAccountNumber, BigDecimal.valueOf(-20_000), customer.getPin(accountNumber));
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        assertEquals(BigDecimal.valueOf(50_000), branch.getBalance(accountNumber));
+        assertEquals(BigDecimal.valueOf(0), branch.getBalance(beneficiaryAccountNumber));
+    }
+
+    @Test
+    void testThatBranchCannotTransferFundsBetweenTwoAccountsWithInsufficientBalance() {
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+        Customer secondCustomer = new Customer("Doe", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(secondCustomer, SAVINGS);
+        assertEquals(2, branch.getTotalNumberOfAccounts());
+
+        String accountNumber = branch.getAccount(customer, CURRENT).getAccountNumber();
+        branch.deposit(accountNumber, BigDecimal.valueOf(50_000));
+        String pin = "1234";
+        customer.setPin(accountNumber, pin);
+
+        String beneficiaryAccountNumber = branch.getAccount(secondCustomer, SAVINGS).getAccountNumber();
+        assertEquals(BigDecimal.valueOf(0), branch.getBalance(beneficiaryAccountNumber));
+        try {
+            branch.transfer(accountNumber, beneficiaryAccountNumber, BigDecimal.valueOf(120_000), customer.getPin(accountNumber));
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        assertEquals(BigDecimal.valueOf(50_000), branch.getBalance(accountNumber));
+        assertEquals(BigDecimal.valueOf(0), branch.getBalance(beneficiaryAccountNumber));
+    }
+
+    @Test
+    void testThatBranchCannotTransferFundsBetweenTwoAccountsWithInvalidPin() {
+        String sortCode = gtBank.generateSortCode();
+        gtBank.setUpBranch(sortCode);
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+        Customer secondCustomer = new Customer("Doe", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(secondCustomer, SAVINGS);
+        assertEquals(2, branch.getTotalNumberOfAccounts());
+
+        String accountNumber = branch.getAccount(customer, CURRENT).getAccountNumber();
+        branch.deposit(accountNumber, BigDecimal.valueOf(50_000));
+        String pin = "1234";
+        customer.setPin(accountNumber, pin);
+
+        String beneficiaryAccountNumber = branch.getAccount(secondCustomer, SAVINGS).getAccountNumber();
+        assertEquals(BigDecimal.valueOf(0), branch.getBalance(beneficiaryAccountNumber));
+        try {
+            branch.transfer(accountNumber, beneficiaryAccountNumber, BigDecimal.valueOf(10_000), "1111");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+        assertEquals(BigDecimal.valueOf(50_000), branch.getBalance(accountNumber));
+        assertEquals(BigDecimal.valueOf(0), branch.getBalance(beneficiaryAccountNumber));
+    }
+
+
 }
+
+
