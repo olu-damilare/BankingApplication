@@ -125,5 +125,32 @@ public class Customer {
             account.setPin(newPin);
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String newFirstName) {
+        firstName = newFirstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String newMiddleName) {
+        middleName = newMiddleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String newPhoneNumber) {
+        phoneNumber = newPhoneNumber;
+    }
 }
 
