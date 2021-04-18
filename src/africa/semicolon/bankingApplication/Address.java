@@ -8,4 +8,10 @@ public class Address {
         this.houseNumber = houseNumber;
         this.streetName = streetName;
     }
+
+    @Override
+    public String toString() {
+        return  "House Number = " + houseNumber + '\n' +
+                "Street Name = " + streetName;
+    }
 }
