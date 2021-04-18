@@ -7,8 +7,10 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static africa.semicolon.bankingApplication.AccountType.*;
+import static africa.semicolon.bankingApplication.CardType.*;
 
 public class BankingApplicationTests {
+
     int bankID;
     CentralBank centralBank;
     Bank gtBank;
@@ -40,6 +42,8 @@ public class BankingApplicationTests {
     void testThatCentralBankCanCreateBank() {
         assertNotNull(gtBank);
         assertEquals(1, centralBank.getTotalNumberOfBanks());
+        assertEquals("Guarantee Trust Bank", centralBank.getBankName(bankID));
+        assertEquals(bankID, centralBank.getBankID("Guarantee Trust Bank"));
     }
 
     @Test
@@ -53,6 +57,8 @@ public class BankingApplicationTests {
 
         assertNotNull(zenithBank);
         assertEquals(bankID_2, centralBank.getBankID(zenithBank));
+        assertEquals("Zenith Bank", centralBank.getBankName(bankID_2));
+        assertEquals(bankID_2, centralBank.getBankID("Zenith Bank"));
         assertEquals(2, centralBank.getTotalNumberOfBanks());
 
     }
@@ -118,19 +124,22 @@ public class BankingApplicationTests {
 
     @Test
     void testThatBranchCanOpenSavingsAccountForCustomer() {
-        Branch branch = gtBank.getBranch(sortCode);
-        assertNotNull(branch);
         assertEquals(1, gtBank.getTotalNumberOfBranches());
+        Branch branch = gtBank.getBranch(sortCode);
         Address address = new Address("12", "Yaba road");
         Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        assertEquals(0, customer.getCustomerID());
 
         branch.openAccount(customer, SAVINGS);
+
+        assertEquals(1, customer.getCustomerID());
         assertEquals(1, branch.getTotalNumberOfAccounts());
         assertEquals(1, branch.getTotalNumberOfCustomers());
         Account account = branch.getAccount(customer, SAVINGS);
         assertNotNull(account);
         String accountNumber = account.getAccountNumber();
         assertEquals("John Joe Bloggs", branch.getAccountName(accountNumber));
+        assertEquals(1, account.getCustomerID());
 
     }
 
@@ -744,7 +753,49 @@ public class BankingApplicationTests {
         assertEquals(newPhoneNumber, branch.getPhoneNumber(customer));
         }
 
+    @Test
+    void testThatBranchCanRequestMasterCardOnAccount(){
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+        assertEquals(1, branch.getTotalNumberOfAccounts());
+        String accountNumber = branch.getAccount(customer, CURRENT).getAccountNumber();
+        System.out.println(branch.getAccount(accountNumber).getCustomerID());
 
+        Card card = new Card(MASTERCARD);
+        String cardNumber = gtBank.generateCardNumber(accountNumber, card.getCardType());
+        card.assignCardNumber(cardNumber);
+        assertEquals(cardNumber, card.getCardNumber());
+
+        branch.requestCard(accountNumber, card);
+        assertNotNull(branch.getCard(accountNumber));
+        assertEquals(MASTERCARD, branch.getCardType(accountNumber));
+        assertEquals("John Joe Bloggs", branch.getCardHolderName(card));
+        System.out.println(branch.getAccount(accountNumber));
+    }
+
+    @Test
+    void testThatBranchCanRequestVisaCardOnAccount(){
+        Branch branch = gtBank.getBranch(sortCode);
+        assertEquals(1, gtBank.getTotalNumberOfBranches());
+        Address address = new Address("12", "Yaba road");
+        Customer customer = new Customer("John", "Joe", "Bloggs", address, "08012345678");
+        branch.openAccount(customer, CURRENT);
+        assertEquals(1, branch.getTotalNumberOfAccounts());
+        String accountNumber = branch.getAccount(customer, CURRENT).getAccountNumber();
+
+        Card card = new Card(VISA);
+        String cardNumber = gtBank.generateCardNumber(accountNumber, card.getCardType());
+        card.assignCardNumber(cardNumber);
+        assertEquals(cardNumber, card.getCardNumber());
+        branch.requestCard(accountNumber, card);
+
+        assertNotNull(branch.getCard(accountNumber));
+        assertEquals(VISA, branch.getCardType(accountNumber));
+
+    }
 
 }
 
