@@ -1,11 +1,10 @@
 package africa.semicolon.bankingApplication;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 
 public class CentralBank {
     private ArrayList<Bank> banks = new ArrayList<>();
-    private static int bankIdentificationNumberCounter = 1000;
+    private static int bankIdentificationNumberCounter = 10000;
 
     public void createBank(String bankName, int bankIdentificationNumber) {
         Bank bank = new Bank(bankName, bankIdentificationNumber);
