@@ -2,11 +2,14 @@ package africa.semicolon.bankingApplication;
 
 import java.util.ArrayList;
 
+import static africa.semicolon.bankingApplication.CardType.MASTERCARD;
+
 public class Bank {
     private final String bankName;
     private final int bankIdentificationNumber;
-    private static int branchSortCodeCounter = 1000;
+    private static int branchSortCodeCounter = 100;
     private final ArrayList<Branch> branches = new ArrayList<>();
+    private static int cardNumberChecker;
 
     public Bank(String bankName, int bankIdentificationNumber) {
         this.bankName = bankName;
@@ -91,5 +94,12 @@ public class Bank {
             totalNumberOfCustomers += branch.getTotalNumberOfCustomers();
         }
         return totalNumberOfCustomers;
+    }
+
+    public String generateCardNumber(String accountNumber, CardType cardType){
+        if(cardType == MASTERCARD)
+            return "" + 5 + bankIdentificationNumber + (Integer.parseInt(accountNumber)/10000) + ++cardNumberChecker;
+        else
+        return "" + 4 + bankIdentificationNumber + (Integer.parseInt(accountNumber)/10) + ++cardNumberChecker;
     }
 }
