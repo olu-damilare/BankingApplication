@@ -9,12 +9,23 @@ public class Account {
     private final AccountType accountType;
     private BigDecimal balance = new BigDecimal(0);
     private String pin;
+    private Card card;
 
     public Account(Customer customer, AccountType accountType, String accountNumber) {
         this.accountType = accountType;
         customerID = customer.getCustomerID();
         this.accountNumber = accountNumber;
         accountName = customer.getFullName();
+    }
+
+    @Override
+    public String toString() {
+        return  "Customer_ID = " + customerID + '\n' +
+                "Account Number = " + accountNumber + '\n' +
+                "Account Name = " + accountName + '\n' +
+                "Account Type = " + accountType + '\n' +
+                "Balance = " + balance + '\n' +
+                "Card: " + card;
     }
 
     public AccountType getAccountType() {
@@ -77,7 +88,15 @@ public class Account {
         accountName = newAccountName;
     }
 
-    public int getCustomerID() {
+
+    public void assignCard(Card card) {
+        this.card = card;
+    }
+
+    public Card getCard() {
+        return card;
+    }
+    public int getCustomerID(){
         return customerID;
     }
 }
