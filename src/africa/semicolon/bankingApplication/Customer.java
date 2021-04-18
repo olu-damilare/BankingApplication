@@ -23,6 +23,17 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
+    @Override
+    public String toString() {
+        return  "Last Name = " + lastName + '\n' +
+                "Phone Number = " + phoneNumber + '\n' +
+                "First Name = " + firstName + '\n' +
+                "Middle Name = " + middleName + '\n' +
+                "Address = " + address + '\n' +
+                "Accounts = " + accounts + '\n' +
+                "Customer_ID = " + customerID;
+    }
+
     public void addAccount(Account account) {
         if(confirmEligibilityToOpenAdditionalAccount(account))
             accounts.add(account);
