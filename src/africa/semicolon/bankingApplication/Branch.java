@@ -38,13 +38,14 @@ public class Branch  implements  Transactions, GetBy {
     }
 
     private void accountOpeningProcess(Customer customer, AccountType accountType) {
+        customer.assignCustomerID(++customerIDCounter);
         String accountNumber = generateAccountNumber();
         Account account = new Account(customer, accountType, accountNumber);
         accounts.add(account);
         if (!customers.contains(customer))
             customers.add(customer);
         customer.addAccount(account);
-        customer.assignCustomerID(++customerIDCounter);
+
     }
 
     private String generateAccountNumber() {
@@ -208,6 +209,15 @@ public class Branch  implements  Transactions, GetBy {
         getCustomer(customer.getCustomerID()).setPhoneNumber(newPhoneNumber);
     }
 
+    @Override
+    public void requestCard(String accountNumber, Card card) {
+        Account account = getAccount(accountNumber);
+        account.assignCard(card);
+        card.assignCardHolderName(account.getAccountName());
+
+
+    }
+
     private void updateAccountName(Customer customer, Account[] accounts) {
         for (Account account : accounts) {
             account.updateAccountName(customer.getFullName());
@@ -232,5 +242,17 @@ public class Branch  implements  Transactions, GetBy {
 
     public String getPhoneNumber(Customer customer) {
         return getCustomer(customer.getCustomerID()).getPhoneNumber();
+    }
+
+    public Card getCard(String accountNumber) {
+       return getAccount(accountNumber).getCard();
+    }
+
+    public CardType getCardType(String accountNumber) {
+        return getCard(accountNumber).getCardType();
+    }
+
+    public String getCardHolderName(Card card) {
+        return card.getCardHolderName();
     }
 }
