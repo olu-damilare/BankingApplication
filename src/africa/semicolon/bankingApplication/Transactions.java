@@ -16,4 +16,6 @@ public interface Transactions {
     void updateMiddleName(Customer customer, String newMiddleName);
 
     void updatePhoneNumber(Customer customer, String newPhoneNumber);
+
+    void requestCard(String accountNumber, Card card);
 }
