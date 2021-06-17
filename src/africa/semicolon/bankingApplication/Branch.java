@@ -69,6 +69,7 @@ public class Branch  implements  Transactions, GetBy {
                 return customer.getAccount(accountType);
         }
         throw new IllegalArgumentException("Customer does not have a " + accountType + " account");
+
     }
 
     private void confirmThatCustomerProfileExistsInBranch(Customer customer) {
