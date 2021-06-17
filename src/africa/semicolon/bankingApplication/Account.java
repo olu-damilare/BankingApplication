@@ -55,7 +55,7 @@ public class Account {
     }
 
     private void validatePin(String pin) {
-        if(pin.length() !=  4)
+        if(!pin.matches("\\d{4}"))
             throw new IllegalArgumentException("Invalid pin");
     }
 
