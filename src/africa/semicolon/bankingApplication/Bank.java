@@ -46,7 +46,7 @@ public class Bank {
     public Branch getBranch(String sortCode) {
         for (Branch branch : branches) {
             if (branch.getSortCode().equals(sortCode))
-                return branch;
+                  return branch;
         }
         return null;
     }
@@ -102,4 +102,6 @@ public class Bank {
         else
         return "" + 4 + bankIdentificationNumber + (Integer.parseInt(accountNumber)/10) + ++cardNumberChecker;
     }
+
+
 }
