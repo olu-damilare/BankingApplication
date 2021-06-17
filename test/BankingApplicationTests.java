@@ -26,8 +26,7 @@ public class BankingApplicationTests {
         sortCode = gtBank.generateSortCode();
         gtBank.setUpBranch(sortCode);
         branch = gtBank.getBranch(sortCode);
-
-    }
+        }
 
     @AfterEach
     void tearDown() {
@@ -789,6 +788,7 @@ public class BankingApplicationTests {
         Card card = new Card(VISA);
         String cardNumber = gtBank.generateCardNumber(accountNumber, card.getCardType());
         card.assignCardNumber(cardNumber);
+        System.out.println(cardNumber);
         assertEquals(cardNumber, card.getCardNumber());
         branch.requestCard(accountNumber, card);
 
